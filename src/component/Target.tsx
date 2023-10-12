@@ -12,8 +12,8 @@ export default function target() {
     event.preventDefault();
     setTargetInput({...targetInput, target: userInput.target});
     setUserInput({...userInput, target:0});
-
   }
+  
   return (
     <div className="targetContainer">
         <form className="balanceContainers" onSubmit={onSubmitHandler}>

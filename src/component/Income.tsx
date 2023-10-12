@@ -1,8 +1,17 @@
 import React, {useState} from 'react'
 
-export default function Income() {
+type IncomeObject ={
+  incomeSource:string,
+  amount:number,
+  dateOfIncome:Date
+}
+type Prop ={
+  setIncomeList: React.Dispatch<React.SetStateAction<IncomeObject[]>>;
+  incomeList:IncomeObject[];
+}
+
+export default function Income(prop: Prop) {
   const [income, setIncome]= useState({incomeSource:"", amount:0, dateOfIncome:new Date() });
-  const [incomeList,setIncomeList]= useState<{incomeSource:string; amount:number; dateOfIncome:Date}[]>([]);
 
   function setIncomeSource(event: React.ChangeEvent<HTMLInputElement>){
     console.log("income source",event.target.value);
@@ -21,7 +30,7 @@ export default function Income() {
 
   function onSubmitHandler(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
-    setIncomeList([...incomeList, income ])
+    prop.setIncomeList([...prop.incomeList, income ])
     setIncome({ ...income, incomeSource:"", amount:0 })
 
   }
@@ -54,9 +63,9 @@ export default function Income() {
       </form>
       </div>
       <div className="NewValues">
-      {incomeList.map((input)=> { return ( <div>      
-        <p> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}</p> 
-      </div>)})}
+           {prop.incomeList.map((input)=> { return ( <ul>      
+        <li> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}</li> 
+      </ul>)})}
       </div>
     </div>
   );

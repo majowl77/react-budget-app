@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 
 export default function Expense() {
   const [expense, setExpense]= useState({expenseSource:"", amount:0, dateOfExpense:new Date() });
-  const [expenseList,setExpenseList]= useState<{expenseSource:string; amount:number; dateOfExpense:Date}[]>([]);
 
   function getExpenseSource(event: React.ChangeEvent<HTMLInputElement>){
     console.log("income source",event.target.value);
