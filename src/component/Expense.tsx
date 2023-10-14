@@ -1,7 +1,19 @@
 import React, {useState} from 'react'
 
-export default function Expense() {
-  const [expense, setExpense]= useState({expenseSource:"", amount:0, dateOfExpense:new Date() });
+type ExpenseObject ={
+  expenseSource:string,
+  amount:number,
+  dateOfExpense:Date,
+  key:string;
+  }
+type Prop={
+  setExpenseList:  React.Dispatch<React.SetStateAction<{expenseSource: string,  amount: number, dateOfExpense: Date,  key:string; }[]>>;
+  expenseList: ExpenseObject[];
+  setBalanceInput:React.Dispatch<React.SetStateAction<number>>;
+  balanceInput: number;
+}
+export default function Expense(prop: Prop) {
+  const [expense, setExpense]= useState({expenseSource:"", amount:0, dateOfExpense:new Date() ,key:crypto.randomUUID()});
 
   function getExpenseSource(event: React.ChangeEvent<HTMLInputElement>){
     console.log("income source",event.target.value);
@@ -20,7 +32,9 @@ export default function Expense() {
 
   function onSubmitHandler(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
-    setExpenseList([...expenseList, expense ])
+    prop.setExpenseList([...prop.expenseList, expense ])
+    let amountExpense= expense.amount;
+    prop.setBalanceInput(prop.balanceInput - amountExpense);
     setExpense({ ...expense, expenseSource:"", amount:0 })
 
   }
@@ -41,9 +55,9 @@ export default function Expense() {
       </form>
       </div>
       <div className="NewValues">
-      {expenseList.map((input)=> { return ( <div>      
-        <p> {input.expenseSource} : {input.amount}EUR  on  {input.dateOfExpense.toDateString()}</p> 
-      </div>)})}
+      {prop.expenseList.map((input)=> { return ( <ul>      
+        <li key={input.key}> {input.expenseSource} : {input.amount}EUR  on  {input.dateOfExpense.toDateString()}</li> 
+      </ul>)})}
       </div>
 
     </div>

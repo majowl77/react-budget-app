@@ -3,15 +3,18 @@ import React, {useState} from 'react'
 type IncomeObject ={
   incomeSource:string,
   amount:number,
-  dateOfIncome:Date
+  dateOfIncome:Date,
+  key:string
 }
 type Prop ={
   setIncomeList: React.Dispatch<React.SetStateAction<IncomeObject[]>>;
   incomeList:IncomeObject[];
+  setBalanceInput:React.Dispatch<React.SetStateAction<number>>;
+  balanceInput: number;
 }
 
 export default function Income(prop: Prop) {
-  const [income, setIncome]= useState({incomeSource:"", amount:0, dateOfIncome:new Date() });
+  const [income, setIncome]= useState({incomeSource:"", amount:0, dateOfIncome:new Date(),key:crypto.randomUUID() });
 
   function setIncomeSource(event: React.ChangeEvent<HTMLInputElement>){
     console.log("income source",event.target.value);
@@ -28,10 +31,16 @@ export default function Income(prop: Prop) {
     setIncome({...income, dateOfIncome:dateOfIncome})
   }
 
+
+
   function onSubmitHandler(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
     prop.setIncomeList([...prop.incomeList, income ])
+    let amountIncome= income.amount;
+    prop.setBalanceInput(prop.balanceInput + amountIncome);
     setIncome({ ...income, incomeSource:"", amount:0 })
+
+    // console.log(prop.incomeList.map((input)=> input));
 
   }
   return (
@@ -44,27 +53,29 @@ export default function Income(prop: Prop) {
         placeholder="income source"
         name= "amountOfIncome" 
         onChange={setIncomeSource}
-        value={income.incomeSource}></input> 
+        value={income.incomeSource}>
+          </input> 
         <label className="labelText"  htmlFor="amountOfIncome" > Amount of income: </label>
         <input 
         type="number" 
         placeholder="Amount of income"
         name= "amountOfIncome"
         onChange={setIncomeAmount}
-        value={income.amount} ></input>
+        value={income.amount} >
+        </input>
         <label className="labelText" htmlFor="dateOfIncome" > Date of income: </label>
         <input 
         type="date"
         placeholder="Date of income"
         name= "dateOfIncome" 
-        onChange={setIncomeDate}
-       ></input>
-        <button className='btn'> Add income</button>
+        onChange={setIncomeDate}>
+        </input>
+        <button className='btn' type='submit'> Add income</button>
       </form>
       </div>
       <div className="NewValues">
            {prop.incomeList.map((input)=> { return ( <ul>      
-        <li> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}</li> 
+        <li key={input.key}> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}</li> 
       </ul>)})}
       </div>
     </div>
