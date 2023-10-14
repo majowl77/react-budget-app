@@ -13,20 +13,32 @@ function App() {
   const [progressBar, setProgressBar]= useState(0);
   const [targetInput, setTargetInput]= useState(0);
 
-  // const [progressTargetSaving, setProgressTargetSaving]= useState<{ savingInput:number; progressBar:number ; targetSaving:number }>()
-  // const initialValue= 0;
+  function incomeDeleteHandler(keyToDelete:string){
+    const deletedItem = incomeList.find((deletedIncome)=> deletedIncome.key === keyToDelete )
+    if (deletedItem){
+      setBalanceInput(balanceInput - deletedItem.amount);
+    }
+    setIncomeList(prevIncomeList => prevIncomeList.filter(input => input.key !== keyToDelete));
+  }
+
+  function expenseDeleteHandler(keyToDelete:string){
+    const deletedItem = expenseList.find((deletedIncome)=> deletedIncome.key === keyToDelete )
+    if (deletedItem){
+      setBalanceInput(balanceInput + deletedItem.amount);
+    }
+    setExpenseList(prevExpenseList => prevExpenseList.filter(input => input.key !== keyToDelete));
+  }
 
 
+  console.log("the elements ",incomeList )
 
   return (
     <div className="App">
-      <Income setIncomeList={setIncomeList} incomeList={incomeList} balanceInput={balanceInput} setBalanceInput={setBalanceInput} />
-      <Expense setExpenseList={setExpenseList} expenseList={expenseList} balanceInput={balanceInput} setBalanceInput={setBalanceInput} />
+      <Income deleteHandler={incomeDeleteHandler} setIncomeList={setIncomeList} incomeList={incomeList} balanceInput={balanceInput} setBalanceInput={setBalanceInput} />
+      <Expense deleteHandler={expenseDeleteHandler} setExpenseList={setExpenseList} expenseList={expenseList} balanceInput={balanceInput} setBalanceInput={setBalanceInput} />
       <Target targetInput={targetInput} setTargetInput={setTargetInput} savingInput={savingInput} progressBar={progressBar} setProgressBar={setProgressBar} />
       <Balance targetInput={targetInput} setTargetInput={setTargetInput} balanceInput={balanceInput} setBalanceInput={setBalanceInput} setSavingInput={setSavingInput} savingInput={savingInput} progressBar={progressBar} setProgressBar={setProgressBar} />
       <div> 
-        <h2>Results </h2>
-
       </div>
     </div>
   );

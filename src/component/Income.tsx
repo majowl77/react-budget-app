@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 type IncomeObject ={
   incomeSource:string,
@@ -11,10 +12,13 @@ type Prop ={
   incomeList:IncomeObject[];
   setBalanceInput:React.Dispatch<React.SetStateAction<number>>;
   balanceInput: number;
+  deleteHandler: (keyToDelete: string)=> void;
 }
 
 export default function Income(prop: Prop) {
-  const [income, setIncome]= useState({incomeSource:"", amount:0, dateOfIncome:new Date(),key:crypto.randomUUID() });
+
+  const uniqueKey = uuidv4();
+  const [income, setIncome]= useState({incomeSource:"", amount:0, dateOfIncome:new Date(), key: uuidv4()});
 
   function setIncomeSource(event: React.ChangeEvent<HTMLInputElement>){
     console.log("income source",event.target.value);
@@ -30,22 +34,20 @@ export default function Income(prop: Prop) {
     const dateOfIncome =  new Date (event.target.value);
     setIncome({...income, dateOfIncome:dateOfIncome})
   }
-  function deleteHandler(keyToDelete:string){
-    const updatedIncomeList = prop.incomeList.filter(input => input.key !== keyToDelete);
-    prop.setIncomeList(updatedIncomeList);
-  }
 
 
 
   function onSubmitHandler(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
-    prop.setIncomeList([...prop.incomeList, income ])
+    // Generate a unique key for the new item
+    const uniqueKey = uuidv4();
+    const newIncomeItem = {...income, key: uniqueKey };
+    prop.setIncomeList([...prop.incomeList, newIncomeItem ])
+
+    // Update the balance and reset the input fields
     let amountIncome= income.amount;
     prop.setBalanceInput(prop.balanceInput + amountIncome);
     setIncome({ ...income, incomeSource:"", amount:0 })
-
-    // console.log(prop.incomeList.map((input)=> input));
-
   }
   return (
     <div className='divContainer'>
@@ -72,7 +74,7 @@ export default function Income(prop: Prop) {
         type="date"
         placeholder="Date of income"
         name= "dateOfIncome" 
-        onChange={setIncomeDate}>
+        onChange={setIncomeDate} >
         </input>
         <button className='btn' type='submit'> Add income</button>
       </form>
@@ -80,7 +82,7 @@ export default function Income(prop: Prop) {
       <div className="NewValues">
         {prop.incomeList.map((input)=> { return ( <ul>      
         <li key={input.key}> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}
-         <button onClick={() => deleteHandler(input.key)} >Delete</button></li> 
+         <button onClick={() => prop.deleteHandler(input.key)} >Delete</button></li> 
       </ul>)})}
       </div>
     </div>
