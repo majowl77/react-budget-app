@@ -30,6 +30,10 @@ export default function Income(prop: Prop) {
     const dateOfIncome =  new Date (event.target.value);
     setIncome({...income, dateOfIncome:dateOfIncome})
   }
+  function deleteHandler(keyToDelete:string){
+    const updatedIncomeList = prop.incomeList.filter(input => input.key !== keyToDelete);
+    prop.setIncomeList(updatedIncomeList);
+  }
 
 
 
@@ -74,8 +78,9 @@ export default function Income(prop: Prop) {
       </form>
       </div>
       <div className="NewValues">
-           {prop.incomeList.map((input)=> { return ( <ul>      
-        <li key={input.key}> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}</li> 
+        {prop.incomeList.map((input)=> { return ( <ul>      
+        <li key={input.key}> {input.incomeSource} : {input.amount}EUR  on  {input.dateOfIncome.toDateString()}
+         <button onClick={() => deleteHandler(input.key)} >Delete</button></li> 
       </ul>)})}
       </div>
     </div>
