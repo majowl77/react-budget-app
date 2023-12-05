@@ -1,11 +1,12 @@
 .App {
-  text-align: center;
+  /* display: grid;
+  grid-template-columns: 1fr;
+  justify-items: start; */
+  padding: 30px 0;
+  margin-left: 7rem;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -13,21 +14,74 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.containers{
+   display: grid;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   padding: 16px 40px;
+   margin: 10px 30px;
+   background-color: #402b1b;
+   border-radius: 10px;
+   width: 70%;
+   height: 80%;
+}
+/* .balanceContainers{
   display: flex;
-  flex-direction: column;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
+  flex-direction: column;
+  padding: 0 40px;
+  margin: 0 10px;
+  background-color: #402b1b;
+  border-radius: 10px;
+} */
+.divContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+}
+.targetContainer{
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex: 4;
+  align-items: center;
+  flex-direction: column;
+  padding: 16px 40px;
+  margin: 10px 200px;
+  background-color: #402b1b;
+  width: 50%;
+  border-radius: 10px;
 }
-
-.App-link {
-  color: #61dafb;
+.labelText{
+  font-size: 18px;
+  color: aliceblue;
 }
-
+.containers p {
+  font-size: 18px;
+  color: aliceblue;
+}
+input{
+  padding: 5px;
+}
+label{
+  padding: 5px;
+}
+.btn{
+  font-size: 14px;
+  padding: 5px 20px;
+}
+.NewValues{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+  background-color: aliceblue;
+  border-radius: 10px;
+  width: 250px;
+  margin-left: 26px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
